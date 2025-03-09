@@ -2,9 +2,11 @@ from Voz import falar, setRate
 from Tempo import data_atual, hora_atual
 import pause
 import os
+import webbrowser
 import speech_recognition as sr
 import parselmouth
 from random import randint
+from Api import *
 
 def boas_vindas():
     data = data_atual()
@@ -33,25 +35,63 @@ def boas_vindas():
             case 0:
                 saud = "Buenas Noches! Como estás?"
             case 1:
-                setRate(50)
+                setRate(100)
                 saud = "Boa Noite! Vamo querer dormir?"
             case 2:
+                setRate(100)
                 saud = "Que sono cara, hoje eu não tô afim não."
     falar(saud)
     setRate()
 
-def escutar_mic():
+def escutar_mic(pergunta = "Aguardando Sua Fala..."):
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        falar("Aguardando Sua Fala...")
-        r.pause_threshold = 1
-        try:
-            audio = r.listen(source)
-            falar("Processando...")
-            comando = r.recognize_google(audio, language="pt-BR")
-            falar(f'Você Disse "{comando}"?')
-        except sr.UnknownValueError:
-            falar("Desculpe, não entendi.")
+        while True:
+            falar(pergunta)
+            r.pause_threshold = 1
+            try:
+                audio = r.listen(source)
+                falar("Processando...")
+                comando = r.recognize_google(audio, language="pt-BR")
+                print(f"Comando: {comando}")
+            except sr.UnknownValueError:
+                falar("Desculpe, não entendi.")
+                continue
+            else:
+                return comando.lower()
 
 if __name__ == "__main__":
-    boas_vindas()
+    # boas_vindas()
+    while True:
+        fala = escutar_mic()
+        if any(finalizar in fala for finalizar in comandoFinalizar):
+            falar("Até.")
+            break
+        else:
+            if any(abrir in fala for abrir in comandoAbrir):
+                while True:
+                    if "navegador" in fala:
+                        pesquisa = escutar_mic("O que você deseja pesquisar no navegador?")
+                        if "no" in pesquisa:
+                            pesquisa.split("no")
+                            pesq = pesquisa[0].strip()
+                            site = pesquisa[1].strip()
+                            if site.lower() in sitesNavegador:
+                                webbrowser.open(f"https://www.{site}.com/search?q=f{pesq}")
+                        else: 
+                            webbrowser.open(f"https://www.google.com/search?q={pesq.replace(" ", "+")}")
+                    if "spotify" in fala:
+                        os.system("spotify.exe")
+                    if (explorador in fala for explorador in comandoExplorador):
+                        os.system("explorer")
+                    if (nota in fala for nota in comandoNotas):
+                        os.system("notepad")
+                    else: 
+                        fala = escutar_mic("O que você deseja abrir?")
+                        continue
+                    break
+            if any(negar in escutar_mic("Mais alguma coisa?") for negar in comandoNegar): 
+                falar("Ok, até mais tarde.")
+                exit()
+            else:
+                falar("O que você deseja?")
