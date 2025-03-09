@@ -1,0 +1,6 @@
+comandoAbrir = ["abrir", "abre", "iniciar", "executar", "inicializa", "executa", "inicia"]
+comandoFinalizar = ["finalizar", "até mais tarde", "até depois", "tchau", "até"]
+sitesNavegador = ["google", "instagram", "youtube", "canva", "microsoft"]
+comandoNegar = ["não", "nada", "somente"]
+comandoExplorador = ["explorador", "arquivos", "pastas", "arquivos"]
+comandoNotas = ["notas", "notepad", "bloco de notas"]
