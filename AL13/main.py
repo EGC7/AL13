@@ -80,14 +80,26 @@ if __name__ == "__main__":
                                 webbrowser.open(f"https://www.{site}.com/search?q=f{pesq}")
                         else:
                             webbrowser.open(f"https://www.google.com/search?q={pesquisa.replace(" ", "+")}")
-                    if "spotify" in fala:
-                        os.system("spotify.exe")
-                    if (explorador in fala for explorador in comandoExplorador):
+                    if any(musica in fala for musica in comandoMusica):
+                        app = escutar_mic("Qual aplicativo de música eu devo abrir?").lower()
+                        try: 
+                            os.system(f"{app}.exe")
+                        except:
+                            falar("Ocorreu um erro ao abrir esse aplicativo")
+                        else:
+                            resp = escutar_mic("Quer que eu pesquise alguma música?")
+                            if not any(negar in resp for negar in comandoNegar):
+                                if any(aceitar in resp for aceitar in comandoAceitar):
+                                    resp = escutar_mic("Qual música?")
+                                os.system(f"start spotify:search:{resp.replace(" ", "%20")}")
+                    
+                    if any(explorador in fala for explorador in comandoExplorador):
                         os.system("explorer")
-                    if (nota in fala for nota in comandoNotas):
+                    if any(nota in fala for nota in comandoNotas):
                         os.system("notepad")
                     else: 
                         fala = escutar_mic("O que você deseja abrir?")
+                        if "nada" in fala: break
                         continue
                     break
             if any(negar in escutar_mic("Mais alguma coisa?") for negar in comandoNegar): 
