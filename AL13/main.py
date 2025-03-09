@@ -50,7 +50,7 @@ def escutar_mic(pergunta = "Aguardando Sua Fala..."):
             falar(pergunta)
             r.pause_threshold = 1
             try:
-                audio = r.listen(source)
+                audio = r.listen(source, timeout=5)
                 falar("Processando...")
                 comando = r.recognize_google(audio, language="pt-BR")
                 print(f"Comando: {comando}")
