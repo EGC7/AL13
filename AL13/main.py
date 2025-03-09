@@ -61,7 +61,7 @@ def escutar_mic(pergunta = "Aguardando Sua Fala..."):
                 return comando.lower()
 
 if __name__ == "__main__":
-    # boas_vindas()
+    boas_vindas()
     while True:
         fala = escutar_mic()
         if any(finalizar in fala for finalizar in comandoFinalizar):
@@ -78,8 +78,8 @@ if __name__ == "__main__":
                             site = pesquisa[1].strip()
                             if site.lower() in sitesNavegador:
                                 webbrowser.open(f"https://www.{site}.com/search?q=f{pesq}")
-                        else: 
-                            webbrowser.open(f"https://www.google.com/search?q={pesq.replace(" ", "+")}")
+                        else:
+                            webbrowser.open(f"https://www.google.com/search?q={pesquisa.replace(" ", "+")}")
                     if "spotify" in fala:
                         os.system("spotify.exe")
                     if (explorador in fala for explorador in comandoExplorador):
