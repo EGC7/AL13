@@ -6,7 +6,7 @@ def falar(fala):
     print(str(fala))
     txt_speech.runAndWait()
 
-def setRate(rate = 150):
+def setRate(rate = 200):
     txt_speech.setProperty('rate', rate)
 
 txt_speech = pyttsx3.init()
